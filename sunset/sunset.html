@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CPSC 314 Sept 2022    Assmt 1</title>
+    <style>
+      body { margin: 0; } canvas {width: 100%;
+      height: 100% }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <script src="js/three.min.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/SourceLoader.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/KeyboardState.js"></script> <!-- By Jerome Etienne: http://jetienne.com/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js" integrity="sha512-lIKG1kC5TMb1Zx32vdz1n31YJMZRknVY20U9MJ28hD3y2c0OKN0Ce5NhJji78v8zX5UOSsm+MTBOcJt7yMBnSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script id="myVertexShader" type="x-shader/x-vertex">
+varying vec3 varyingNormal;
+void main()
+{
+        varyingNormal = normal;
+	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+	gl_Position = projectionMatrix * mvPosition;
+}
+</script>
+
+<script id="myFragmentShader" type="x-shader/x-fragment">
+uniform sampler2D floorTexture;
+varying vec3 varyingNormal;
+
+void main( void ) {
+  // light direction
+  vec3 L = vec3(0.0, 0.0, -1.0);
+  
+  // Set final rendered color according to the surface normal
+  vec3 N = normalize(varyingNormal);
+  
+  float i = dot(N, L);
+
+  // vec3 N = vec3(1.0,0.0,0.0);
+  
+  // green pixels
+  // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
+  
+  gl_FragColor = vec4(N.x, N.y, N.z, 1.0);
+}
+</script>
+
+
+<script src="creative.js"></script>
+
+</body>
+</html>
+
